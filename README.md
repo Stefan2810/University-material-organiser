@@ -1,4 +1,4 @@
-# University-material-organiser
+# University-rental-process
   ## Project Overview
   This project is a book catalog web application built using Spring Boot and Java. It facilitates the management of books, users, and book loan requests. Users can log in, browse available books, request loans, and administrators can manage books and loan requests.
   ## Features
