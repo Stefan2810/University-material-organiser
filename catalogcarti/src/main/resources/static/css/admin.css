@@ -1,0 +1,269 @@
+/* Resetare stiluri de bază */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Titlu principal */
+h1 {
+    color: #2c3e50; /* Albastru inchis */
+    font-size: 36px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* Stilizare subtitluri (h2) */
+h2 {
+    color: #2c3e50;
+    font-size: 28px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Stilizarea formularului de adăugare carte */
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 30px;
+}
+
+form input {
+    padding: 12px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+}
+
+form input:focus {
+    border-color: #3498db;
+}
+
+form button {
+    background-color: #3498db; /* Albastru pentru buton */
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #2980b9;
+}
+
+/* Lista de cărți */
+#lista-carti {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 30px;
+}
+
+.carte-item {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.carte-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.carte-item p {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.carte-item button {
+    background-color: #f39c12; /* Portocaliu pentru modificare și ștergere */
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.carte-item button:hover {
+    background-color: #e67e22;
+}
+
+/* Formular pentru modificarea unei cărți */
+#modifica-form-container {
+    display: none;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+}
+
+#modifica-form-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+#modifica-form-container input {
+    margin-bottom: 10px;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+#modifica-form-container input:focus {
+    border-color: #3498db;
+}
+
+#modifica-form-container button {
+    background-color: #2980b9;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#modifica-form-container button:hover {
+    background-color: #1f6aa2;
+}
+
+/* Lista cererilor de împrumut */
+#lista-cereri {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 30px;
+}
+
+.cerere-item {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cerere-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.cerere-item p {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.cerere-item button {
+    background-color: #27ae60; /* Verde pentru aprobare și respingere */
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.cerere-item button:hover {
+    background-color: #2ecc71;
+}
+
+/* Buton logout */
+button.logout {
+    background-color: #e74c3c; /* Roșu pentru logout */
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 30px;
+}
+
+button.logout:hover {
+    background-color: #c0392b;
+}
+
+/* Media Queries pentru responsive design */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+
+    form, #modifica-form-container {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    #lista-carti, #lista-cereri {
+        display: block;
+        padding: 0 10px;
+    }
+
+    .carte-item, .cerere-item {
+        margin-bottom: 20px;
+    }
+
+    .logout {
+        width: 100%;
+    }
+}
+/* Stilizarea butonului de Logout */
+button {
+    padding: 12px 25px;
+    font-size: 16px;
+    background-color: #e74c3c; /* Roșu pentru logout */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 30px;
+    width: 200px; /* Lățimea fixă a butonului */
+    text-align: center;
+}
+
+button:hover {
+    background-color: #c0392b; /* Roșu mai închis pentru hover */
+    transform: scale(1.05); /* Efect de mărire la hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Adăugarea unei umbre la hover */
+}
+
+button:active {
+    transform: scale(1); /* Căderea efectului de mărire la apăsare */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Umbra mai mică când este apăsat */
+}

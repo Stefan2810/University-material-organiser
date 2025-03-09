@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cititor Dashboard</title>
+  <link rel="stylesheet" href="css/cititor.css">
+  <script>
+    // Function to fetch the username from localStorage
+    const usernameCititor = localStorage.getItem("username");
+
+    // Check if the username exists in localStorage
+    if (!usernameCititor) {
+      alert("Nu esti autentificat! Te vom redirecționa la login.");
+      window.location.href = "/login.html"; // Redirect to login page if not authenticated
+    }
+
+    async function afiseazaCarti() {
+      const response = await fetch("/api/carti");
+      const carti = await response.json();
+
+      const listaCarti = document.getElementById("lista-carti");
+      listaCarti.innerHTML = ""; // Clear the list before populating
+
+      carti.forEach(carte => {
+        const item = document.createElement("div");
+        item.classList.add("carte-item"); // Add class to each book item
+
+        // Create the book display
+        item.innerHTML = `
+          <p>${carte.titlu} de ${carte.autor} (${carte.anPublicare})</p>
+          <button onclick="afiseazaFormular('${carte.titlu}', ${carte.id})">Imprumuta cartea fizic</button>
+          <div id="form-${carte.id}" class="formular-cerere" style="display:none;">
+              <form onsubmit="event.preventDefault(); trimiteCerere('${carte.titlu}', ${carte.id});">
+                  <input id="usernameCititor-${carte.id}" type="text" placeholder="Utilizator" value="${usernameCititor}" readonly required>
+                  <input id="titluCarte-${carte.id}" type="text" placeholder="Titlu Carte" value="${carte.titlu}" readonly required>
+                  <button type="submit">Trimite Cerere</button>
+              </form>
+          </div>
+        `;
+        listaCarti.appendChild(item);
+      });
+    }
+
+    async function trimiteCerere(titluCarte, idCarte) {
+      const cerere = {
+        usernameCititor: usernameCititor,
+        titluCarte: titluCarte
+      };
+
+      const response = await fetch("/api/cereri", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(cerere),
+      });
+
+      const form = document.getElementById(`form-${idCarte}`);
+      if (response.ok) {
+        alert("Cerere trimisa cu succes!");
+        form.reset(); // Reset the form after submission
+        afiseazaCereri(); // Refresh loan requests
+      } else {
+        alert("Eroare la trimiterea cererii.");
+      }
+    }
+
+    function afiseazaFormular(titluCarte, idCarte) {
+      const formularCerereDiv = document.getElementById(`form-${idCarte}`);
+      formularCerereDiv.style.display = "block"; // Make the form visible
+    }
+
+    // Function to fetch and display user's loan requests
+    async function afiseazaCereri() {
+      try {
+        const response = await fetch(`/api/cereri/${usernameCititor}`);
+        if (!response.ok) throw new Error("Eroare la preluarea cererilor.");
+
+        const cereri = await response.json();
+        const listaCereri = document.getElementById("lista-cereri");
+        listaCereri.innerHTML = ""; // Clear the list before populating
+
+        if (cereri.length === 0) {
+          listaCereri.innerHTML = "<p>Nu există cereri de împrumut disponibile.</p>";
+          return;
+        }
+
+        cereri.forEach(cerere => {
+          const item = document.createElement("div");
+          item.classList.add("cerere-item");
+
+          // Format the timestamp
+          const timestamp = new Date(cerere.timestamp);
+          const formattedDate = timestamp.toLocaleString(); // Format date to a readable format
+
+          item.innerHTML = `
+            <p>Cartea: ${cerere.titluCarte}</p>
+            <p>Status: ${cerere.status || "În așteptare"}</p>
+            <p>Trimis la: ${formattedDate}</p>
+          `;
+          listaCereri.appendChild(item);
+        });
+      } catch (error) {
+        console.error("Eroare la încărcarea cererilor:", error);
+        alert("Nu am putut încărca cererile de împrumut.");
+      }
+    }
+
+    // Logout function: clear localStorage and redirect to index.html
+    function logout() {
+      localStorage.removeItem("username");  // Remove username from localStorage
+      window.location.href = "/index.html";  // Redirect to the index page
+    }
+
+    // Call afiseazaCarti and afiseazaCereri when the page loads
+    window.onload = function () {
+      afiseazaCarti();
+      afiseazaCereri();
+    };
+  </script>
+</head>
+<body>
+<h1>Cititor Dashboard</h1>
+
+<h2>Carti disponibile</h2>
+<div id="lista-carti">
+  <!-- Books will be displayed here -->
+</div>
+
+<h2>Cereri de Imprumut</h2>
+<div id="lista-cereri">
+  <!-- Loan requests will be displayed here -->
+</div>
+
+<!-- Logout button -->
+<button onclick="logout()">Logout</button>
+
+</body>
+</html>

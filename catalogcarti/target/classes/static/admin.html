@@ -1,0 +1,253 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="css/admin.css">
+  <script>
+    // Function to add a new book
+    async function adaugaCarte() {
+      const titlu = document.getElementById("titlu").value;
+      const autor = document.getElementById("autor").value;
+      const categorie = document.getElementById("categorie").value;
+      const anPublicare = document.getElementById("anPublicare").value;
+
+      const carte = {
+        titlu: titlu,
+        autor: autor,
+        categorie: categorie,
+        anPublicare: parseInt(anPublicare),
+      };
+
+      try {
+        const response = await fetch("/api/carti", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(carte),
+        });
+
+        if (!response.ok) {
+          throw new Error("Eroare la adaugarea cartii.");
+        }
+
+        alert("Carte adaugata cu succes!");
+        document.getElementById("formular").reset();
+        afiseazaCarti(); // Refresh the book list
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+
+    // Function to delete a book
+    async function stergeCarte(id) {
+      try {
+        const response = await fetch(`/api/carti/${id}`, { method: "DELETE" });
+        if (!response.ok) {
+          throw new Error("Eroare la stergerea cartii.");
+        }
+
+        alert("Carte stearsa cu succes!");
+        afiseazaCarti(); // Refresh the book list
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+
+    // Function to modify the book
+    async function modificaCarte(titlu, id) {
+      const autor = document.getElementById("modifica-autor").value;
+      const categorie = document.getElementById("modifica-categorie").value;
+      const anPublicare = document.getElementById("modifica-anPublicare").value;
+
+      const carte = {
+        titlu: titlu,
+        autor: autor,
+        categorie: categorie,
+        anPublicare: parseInt(anPublicare),
+      };
+
+      try {
+        const response = await fetch(`/api/carti/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(carte),
+        });
+
+        if (!response.ok) {
+          throw new Error("Eroare la modificarea cartii.");
+        }
+
+        alert("Carte modificata cu succes!");
+        document.getElementById("modifica-form").reset();
+        afiseazaCarti(); // Refresh the book list
+        document.getElementById("modifica-form-container").style.display = "none"; // Hide form after submission
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+
+    // Function to display all books
+    async function afiseazaCarti() {
+      try {
+        const response = await fetch("/api/carti");
+        if (!response.ok) {
+          throw new Error("Eroare la preluarea cartilor.");
+        }
+
+        const carti = await response.json();
+
+        const listaCarti = document.getElementById("lista-carti");
+        listaCarti.innerHTML = ""; // Clear the list before populating
+
+        carti.forEach(carte => {
+          const item = document.createElement("div");
+          item.classList.add("carte-item");
+
+          item.innerHTML = `
+            <p>${carte.titlu} de ${carte.autor} (${carte.anPublicare})</p>
+            <button onclick="afiseazaFormularModificare('${carte.titlu}', ${carte.id})">Modifica</button>
+            <button onclick="stergeCarte(${carte.id})">Sterge</button>
+          `;
+          listaCarti.appendChild(item);
+        });
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+
+    async function afiseazaFormularModificare(titlu, id) {
+      try {
+        const response = await fetch(`/api/carti/${id}`);
+        if (!response.ok) {
+          throw new Error("Eroare la preluarea informatiilor despre carte.");
+        }
+
+        const carte = await response.json();
+
+        if (carte) {
+          document.getElementById("modifica-titlu").value = titlu || '';
+          document.getElementById("modifica-autor").value = carte.autor || '';
+          document.getElementById("modifica-categorie").value = carte.categorie || '';
+          document.getElementById("modifica-anPublicare").value = carte.anPublicare || '';
+          document.getElementById("modifica-id").value = carte.id;
+          document.getElementById("modifica-form-container").style.display = "block";
+        } else {
+          alert("Nu s-au gasit date pentru carte.");
+        }
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+
+    async function schimbaStatusCerere(idCerere, status) {
+      try {
+        console.log("ID cerere:", idCerere, "Status:", status);
+        const response = await fetch(`/api/cereri/${idCerere}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: status })
+        });
+
+        if (!response.ok) {
+          console.error("Response:", response.status, response.statusText);
+          throw new Error("Eroare la actualizarea statusului cererii.");
+        }
+
+        alert(`Statusul cererii a fost actualizat la "${status}"!`);
+
+        const cerereElement = document.querySelector(`[data-id='${idCerere}']`);
+        if (cerereElement) {
+          cerereElement.remove();
+        }
+      } catch (error) {
+        console.error("Eroare:", error.message);
+        alert(error.message);
+      }
+    }
+
+    async function afiseazaCereri() {
+      try {
+        const response = await fetch("/api/cereri");
+        if (!response.ok) {
+          throw new Error("Eroare la preluarea cererilor de împrumut.");
+        }
+
+        const cereri = await response.json();
+
+        const listaCereri = document.getElementById("lista-cereri");
+        listaCereri.innerHTML = "";
+
+        cereri.forEach(cerere => {
+          const item = document.createElement("div");
+          item.classList.add("cerere-item");
+          item.setAttribute("data-id", cerere.id);
+
+          item.innerHTML = `
+          <p>Utilizator: ${cerere.usernameCititor}</p>
+          <p>Titlu carte: ${cerere.titluCarte}</p>
+          <p>Status: ${cerere.status || "În așteptare"}</p>
+          <button onclick="schimbaStatusCerere(${cerere.id}, 'Aprobat')">Aprobat</button>
+          <button onclick="schimbaStatusCerere(${cerere.id}, 'Respins')">Respins</button>
+        `;
+
+          listaCereri.appendChild(item);
+        });
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+
+    // Logout function: clear localStorage and redirect to index.html
+    function logout() {
+      localStorage.removeItem("username");  // Remove username from localStorage
+      window.location.href = "/index.html";  // Redirect to the index page
+    }
+
+    // Run this when the page loads
+    window.onload = function() {
+      afiseazaCarti(); // Display the list of books
+      afiseazaCereri(); // Display the loan requests
+    };
+  </script>
+</head>
+<body>
+<h1>Admin Dashboard</h1>
+
+<!-- Form to add a new book -->
+<h2>Adauga Carte</h2>
+<form id="formular" onsubmit="event.preventDefault(); adaugaCarte();">
+  <input id="titlu" type="text" placeholder="Titlu" required>
+  <input id="autor" type="text" placeholder="Autor" required>
+  <input id="categorie" type="text" placeholder="Categorie" required>
+  <input id="anPublicare" type="number" placeholder="An Publicare" required>
+  <button type="submit">Adauga Carte</button>
+</form>
+
+<!-- List of books -->
+<h2>Lista Cartilor</h2>
+<div id="lista-carti"></div>
+
+<!-- Modify book form -->
+<div id="modifica-form-container" style="display:none;">
+  <form id="modifica-form" onsubmit="event.preventDefault(); modificaCarte(document.getElementById('modifica-titlu').value, document.getElementById('modifica-id').value);">
+    <input id="modifica-titlu" type="text" placeholder="Titlu" required readonly>
+    <input id="modifica-autor" type="text" placeholder="Autor" required>
+    <input id="modifica-categorie" type="text" placeholder="Categorie" required>
+    <input id="modifica-anPublicare" type="number" placeholder="An Publicare" required>
+    <input id="modifica-id" type="hidden">
+    <button type="submit">Modifica Carte</button>
+  </form>
+</div>
+
+<!-- Pending book loan requests -->
+<h2>Cereri de Imprumut</h2>
+<div id="lista-cereri"></div>
+
+<!-- Logout button -->
+<button onclick="logout()">Logout</button>
+
+</body>
+</html>

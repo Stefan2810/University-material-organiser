@@ -1,0 +1,73 @@
+/* Setări generale */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+/* Stil pentru titlul principal */
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Stil pentru formular */
+form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Stil pentru câmpurile de input */
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+/* Stil pentru dropdown */
+select {
+    appearance: none;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+/* Stil pentru buton */
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* Efect hover pe buton */
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Aliniere mobil */
+@media (max-width: 600px) {
+    form {
+        width: 90%;
+    }
+}

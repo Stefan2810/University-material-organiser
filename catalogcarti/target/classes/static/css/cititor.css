@@ -1,0 +1,259 @@
+/* Resetarea stilurilor de bază */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fa;
+    color: #333;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    color: #2c3e50; /* Bluemarin */
+    margin-bottom: 20px;
+    font-size: 36px;
+    text-align: center;
+}
+
+/* Stilizarea pentru h2 - Carti disponibile */
+h2 {
+    color: #2c3e50; /* Bluemarin */
+    margin-top: 60px; /* Creștem distanța față de lista de cărți */
+    font-size: 28px;
+    text-align: center;
+}
+
+/* Butonul de logout */
+button {
+    padding: 12px 25px;
+    font-size: 16px;
+    background-color: #e74c3c; /* Roșu pentru logout */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 30px;
+}
+
+button:hover {
+    background-color: #c0392b;
+}
+
+/* Containerul pentru lista de cărți cu casete laterale */
+.books-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+
+.side-box {
+    background-color: #e67e22; /* Portocaliu */
+    width: 10%;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+}
+
+/* Lista de cărți */
+#lista-carti, #lista-cereri {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    width: 80%; /* Lista principală de cărți sau cereri */
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+/* Stilizarea pentru itemii din lista de cărți */
+.carte-item, .cerere-item {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.carte-item:hover, .cerere-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.carte-item p, .cerere-item p {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.carte-item button, .cerere-item button {
+    background-color: #ff8c00; /* Portocaliu */
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.carte-item button:hover, .cerere-item button:hover {
+    background-color: #e77f00;
+}
+
+/* Formular de cerere de împrumut */
+.formular-cerere {
+    margin-top: 15px;
+}
+
+.formular-cerere form {
+    display: flex;
+    flex-direction: column;
+}
+
+.formular-cerere input {
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+}
+
+.formular-cerere input:focus {
+    border-color: #4a90e2;
+}
+
+.formular-cerere button {
+    background-color: #4a90e2; /* Albastru pentru submit */
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.formular-cerere button:hover {
+    background-color: #357ab7;
+}
+
+/* Lista cererilor de împrumut */
+#lista-cereri {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.cerere-item {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cerere-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.cerere-item p {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+/* Casete laterale pentru cereri */
+.cereri-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 30px;
+    margin-bottom: 50px;
+    padding-left: 5%; /* Adaugă spațiu pe partea stângă */
+    padding-right: 5%; /* Adaugă spațiu pe partea dreaptă */
+}
+
+/* Caseta laterală din stânga */
+.side-box-left {
+    background-color: #e67e22; /* Portocaliu */
+    width: 15%; /* Lățimea casetei laterale */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centrează textul pe verticală și orizontală */
+    text-align: center; /* Centrează textul pe orizontală */
+}
+
+/* Caseta laterală din dreapta */
+.side-box-right {
+    background-color: #e67e22; /* Portocaliu */
+    width: 15%; /* Lățimea casetei laterale */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centrează textul pe verticală și orizontală */
+    text-align: center; /* Centrează textul pe orizontală */
+}
+
+/* Lista cererilor de împrumut */
+#lista-cereri {
+    width: 70%; /* Se va extinde să ocupe mai mult din lățimea disponibilă */
+    padding: 0 20px;
+    display: block; /* Modificat de la grid la block pentru afișare verticală */
+}
+
+.cerere-item {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px; /* Adaugă distanță între cereri */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cerere-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.cerere-item p {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+/* Media Queries pentru responsive design */
+@media (max-width: 768px) {
+    .cereri-container {
+        flex-direction: column; /* Aranjare pe verticală pe dispozitive mobile */
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .side-box-left, .side-box-right {
+        width: 100%; /* Casetele laterale vor ocupa întreaga lățime pe mobil */
+        margin-bottom: 15px; /* Adaugă spațiu între casete */
+    }
+
+    #lista-cereri {
+        width: 100%; /* Lista de cereri va ocupa toată lățimea pe mobil */
+        padding: 0 10px;
+    }
+}

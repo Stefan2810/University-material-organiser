@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="css/login.css">
+    <script>
+        async function login() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            console.log('Username:', username);
+            console.log('Password:', password);
+
+            try {
+                const response = await fetch("/api/utilizatori", {  // Modify endpoint
+                    method: "POST",
+                    body: JSON.stringify({ username, password }),
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                console.log('Response status:', response.status);
+
+                // If the response is OK (200)
+                if (response.status === 200) {
+                    const role = await response.text();  // The response will now be a simple text (role)
+
+                    console.log('Rol primit de la server:', role);  // Display the role in the browser console
+
+                    // Store the username in localStorage
+                    localStorage.setItem("username", username);
+
+                    // Redirect based on role
+                    if (role === 'admin') {
+                        console.log("Redirecting to admin.html");
+                        window.location.href = "/admin.html";  // Redirect to admin
+                    } else if (role === 'cititor') {
+                        console.log("Redirecting to cititor.html");
+                        window.location.href = "/cititor.html";  // Redirect to cititor
+                    } else {
+                        alert("Incorrect or unknown role!");
+                    }
+                } else {
+                    alert("Authentication failed! Status: " + response.status);
+                }
+            } catch (error) {
+                console.error('Error during fetch request:', error);
+                alert("Error with the request to the server!");
+            }
+        }
+    </script>
+</head>
+<body>
+<h1>Autentificare</h1>
+<form onsubmit="event.preventDefault(); login();">
+    <input id="username" type="text" placeholder="Utilizator" required>
+    <input id="password" type="password" placeholder="Parola" required>
+    <button type="submit">Autentificare</button>
+</form>
+</body>
+</html>
